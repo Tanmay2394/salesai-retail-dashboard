@@ -1,5 +1,5 @@
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -107,8 +107,8 @@ st.markdown("---")
 # ---------------------------
 def get_gemini_response(prompt, context):
     try:
-        client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
-
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        model = genai.GenerativeModel("gemini-1.5-flash")
         full_prompt = f"""
 You are a senior retail data analyst at ABC Retail.
 
@@ -136,7 +136,7 @@ USER QUESTION:
 {prompt}
 """
 
-        response = client.models.generate_content(
+        response = models.generate_content(
             model="gemini-2.5-flash",
             contents=full_prompt
         )
